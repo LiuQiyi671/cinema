@@ -1,10 +1,10 @@
 <template>
-    
+    <p>电影详情页面</p>
 </template>
 
 <script>
     export default {
-        name: "AdminSchedule"
+        name: "MovieInfo"
     }
 </script>
 

@@ -1,27 +1,17 @@
 <template>
     <el-main class="main">
-        <el-form :model="loginForm"
-                 ref="ReginForm"
-                 class="regform"
-                 label-width="0">
-
-            <h3>账号密码登录</h3>
+        <el-form :model="loginForm" ref="ReginForm" class="regform">
+            <h3 style="margin-left: 90px">账号密码登录</h3>
             <br>
+
             <el-form-item prop="username">
-                <el-input
-                        type="text"
-                        v-model="loginForm.username"
-                        placeholder="请输入账号">
-                </el-input>
+                <el-input type="text" v-model="loginForm.username" placeholder="请输入账号"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input
-                        type="password"
-                        v-model="loginForm.password"
-                        placeholder="请输入密码">
-                </el-input>
+                <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
             </el-form-item>
-            <el-button @click="login">登录</el-button>
+
+            <el-button style="margin-left: 70px" @click="login">登录</el-button>
         </el-form>
     </el-main>
 </template>
@@ -30,6 +20,7 @@
         name: "AdminLogin",
         data() {
             return {
+                // 管理员登录表单
                 loginForm: {
                     username: '',
                     password: '',
@@ -37,6 +28,7 @@
             }
         },
         methods: {
+            // 管理员登录
             login() {
                 if(this.loginForm.username === "admin" && this.loginForm.password === "123456"){
                     window.location.href="http://localhost:8080/admin/home";
@@ -67,5 +59,9 @@
         background: url("../assets/img/login_background.jpg");
         background-size: 100% 100%;
         height: 715px;
+    }
+
+    .el-button{
+        padding: 12px 60px;
     }
 </style>

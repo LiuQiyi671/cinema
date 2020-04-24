@@ -6,13 +6,17 @@ import Register from "@/pages/Register";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminHome from "@/pages/AdminHome";
 import NewsList from "@/pages/NewsList";
+import UserManage from "@/pages/UserManage";
+import AdminAddMovie from "@/pages/AdminAddMovie";
+import Home from "@/pages/Home";
+import UserInfo from "@/pages/UserInfo";
 
 Vue.use(Router);
 
 const routes = [
     {
         path: '/home',
-        component: MovieList,
+        component: Home,
     },
     {
         path: '/user/login',
@@ -23,8 +27,16 @@ const routes = [
         component: Register,
     },
     {
+        path: '/user/userinfo',
+        component: UserInfo,
+    },
+    {
         path: '/user/newslist',
         component: NewsList,
+    },
+    {
+        path: '/user/movielist',
+        component: MovieList,
     },
     {
         path: '/admin/login',
@@ -32,8 +44,18 @@ const routes = [
     },
     {
         path: '/admin/home',
-        component : AdminHome
+        component: AdminHome,
+        redirect: 'admin/user_manage'
+    },
+    {
+        path: '/admin/user_manage',
+        component: UserManage
+    },
+    {
+        path:'/admin/addmovie',
+        component: AdminAddMovie
     }
+
 
 ];
 

@@ -1,18 +1,26 @@
 <template>
     <div>
         <h1 class="title">资讯列表</h1>
-        <div v-for=" (i, index) in this.allNewsList_length " :key="index">
-            <el-card class="box-card" shadow="hover">
-                <div slot="header">
+        <div class="container">
+            <div v-for=" (i, index) in this.allNewsList_length " :key="index">
+                <el-card class="box-card" shadow="hover">
+
                     <span class="text">
+<!--                        资讯标题-->
                         <p style="font-style: oblique; font-weight: bold;">{{i}}、{{allNewsList_Title[i-1]}}</p>
-                        <p style="font-size: 10px">{{allNewsList_AddTime[i-1]}}</p></span>
-                </div>
-                <div>
-                    <p>{{allNewsList_News[i-1]}}</p>
-                </div>
-            </el-card>
+
+<!--                        资讯发布时间-->
+                        <p style="font-size: 10px; padding-left: 800px">{{allNewsList_AddTime[i-1]}}</p>
+                    </span>
+
+<!--                    资讯内容-->
+                    <div>
+                        <p>{{allNewsList_News[i-1]}}</p>
+                    </div>
+                </el-card>
+            </div>
         </div>
+<!--        回到顶部小组件-->
         <ScrollTop></ScrollTop>
     </div>
 </template>
@@ -26,34 +34,50 @@
         components: {ScrollTop},
         data() {
             return {
+
+                // 所有资讯标题列表
                 allNewsList_Title: [],
+
+                // 所有资讯发布时间列表
                 allNewsList_AddTime: [],
+
+                // 所有资讯内容列表
                 allNewsList_News: [],
-                allNewsList_length:''
+
+                // 所有资讯总数量
+                allNewsList_length: ''
             }
         },
         created() {
 
-            axios({
-                method: 'get',
-                url: this.$axios.defaults.baseURL + '/user/news/news_list',
-            }).then(res => {
-                this.allNewsList_length=res.data.length;
-                for (let i = 0; i < res.data.length; i++) {
-                    this.allNewsList_Title.push(res.data[i].newstitle);
-                    this.allNewsList_News.push(res.data[i].news);
-                    this.allNewsList_AddTime.push(res.data[i].newsaddtime.slice(0,19).replace("T"," "));
-                }
-            }).catch(error => {
-                console.log(error);
-            })
+            // 获取所有资讯列表
+            this.getAllNews();
+        },
 
+        methods: {
+
+            // 获取所有资讯列表
+            getAllNews() {
+                axios({
+                    method: 'get',
+                    url: this.$axios.defaults.baseURL + '/user/news/news_list',
+                }).then(res => {
+                    this.allNewsList_length = res.data.length;
+                    for (let i = 0; i < res.data.length; i++) {
+                        this.allNewsList_Title.push(res.data[i].newstitle);
+                        this.allNewsList_News.push(res.data[i].news);
+                        this.allNewsList_AddTime.push(res.data[i].newsaddtime.slice(0, 19).replace("T", " "));
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            }
         },
     }
 </script>
 
 <style scoped>
-    .title{
+    .title {
         padding-left: 45%;
     }
 
@@ -61,12 +85,15 @@
         font-size: 16px;
     }
 
+    .container :hover {
+        border-color: #1da2ff;
+    }
+
     .box-card {
         margin-bottom: 50px;
         margin-left: 16%;
         width: 1000px;
-        border-width: 4px;
-        border-color: azure;
+        border-width: 2px;
     }
 
 </style>

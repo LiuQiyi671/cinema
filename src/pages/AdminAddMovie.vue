@@ -124,7 +124,7 @@
                     movieduration: "",
                     movieactor: "",
                     movielanguage: "",
-                    movieshowtime: "",
+                    moviepublicdate: "",
                     moviedescription: "",
                     file: "",
                     movieid: null,
@@ -158,6 +158,7 @@
                         let formData = new FormData();
                         for (let key in this.form) {
                             formData.append(key, this.form[key]);
+                            formData.append("moviewishpeoplenum",0);
                         }
 
                         this.$axios({

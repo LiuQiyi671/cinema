@@ -1,28 +1,18 @@
 <template>
     <el-main class="main">
-        <el-form :model="loginForm"
-                 ref="ReginForm"
-                 class="regform"
-                 label-width="0">
-
-            <h3>账号密码登录</h3>
+        <el-form :model="loginForm" ref="ReginForm" class="regform">
+            <h3 style="margin-left: 90px">账号密码登录</h3>
             <br>
+
             <el-form-item prop="username">
-                <el-input
-                        type="text"
-                        v-model="loginForm.username"
-                        placeholder="请输入账号">
-                </el-input>
+                <el-input type="text" v-model="loginForm.username" placeholder="请输入账号"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input
-                        type="password"
-                        v-model="loginForm.password"
-                        placeholder="请输入密码">
-                </el-input>
+                <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
             </el-form-item>
-            <el-button @click="login">登录</el-button>
-            <el-button @click="register">注册</el-button>
+
+            <el-button style="position:absolute; margin-left: 70px" @click="login">登录</el-button>
+            <el-button style="position:absolute; margin-left: 170px" @click="register">注册</el-button>
         </el-form>
     </el-main>
 </template>
@@ -33,14 +23,15 @@
         name: "Login",
         data() {
             return {
+                //用户登录表单
                 loginForm: {
                     username: '',
                     password: '',
                 },
-                responseResult: []
             }
         },
         methods: {
+            //用户登录
             login() {
                 axios({
                     method: 'post',
@@ -50,8 +41,9 @@
                         password: this.loginForm.password
                     },
                 }).then(res => {
-                    console.log(res);
-                    if (res.data === true) {
+                    if (res.data !== '') {
+                        this.$store.commit("Userid",res.data);
+                        this.$store.commit("Islogin");
                         this.$router.push('/home');
                     }
                     else {
@@ -63,6 +55,8 @@
                     console.log(error);
                 })
             },
+
+            //用户注册
             register() {
                 this.$router.push('/user/register');
             }
@@ -77,7 +71,7 @@
         width: 310px;
         background: #fff;
         box-shadow: 0 0 10px #B4BCCC;
-        padding: 30px 30px 20px 30px;
+        padding: 20px 30px 60px 30px;
         border-radius: 25px;
     }
 

@@ -1,54 +1,36 @@
 <template>
     <div class="main">
         <el-main ref="homepage">
-            <el-form
-                    :model="ReginForm"
-                    ref="ReginForm"
-                    :rules="rule"
-                    class="regform"
-                    label-width="0">
-
+            <el-form :model="ReginForm" ref="ReginForm" :rules="rule" class="regform" label-width="0">
                 <h3>用户注册</h3>
                 <br>
+
+<!--                用户名-->
                 <el-form-item prop="username">
-                    <el-input
-                            type="text"
-                            v-model="ReginForm.username"
-                            placeholder="用户名">
-                    </el-input>
+                    <el-input type="text" v-model="ReginForm.username" placeholder="用户名"></el-input>
                 </el-form-item>
 
+<!--                用户密码-->
                 <el-form-item prop="password">
-                    <el-input
-                            type="password"
-                            v-model="ReginForm.password"
-                            placeholder="密码">
-                    </el-input>
+                    <el-input type="password" v-model="ReginForm.password" placeholder="密码"></el-input>
                 </el-form-item>
+
+<!--                用户再次确认密码-->
                 <el-form-item prop="confirmpassword">
-                    <el-input
-                            type="password"
-                            v-model="ReginForm.confirmpassword"
-                            placeholder="确认密码">
-                    </el-input>
+                    <el-input type="password" v-model="ReginForm.confirmpassword" placeholder="确认密码"></el-input>
                 </el-form-item>
 
+<!--                用户手机号码-->
                 <el-form-item prop="tel">
-                    <el-input
-                            type="text"
-                            v-model="ReginForm.tel"
-                            placeholder="手机号码">
-                    </el-input>
+                    <el-input type="text" v-model="ReginForm.tel" placeholder="手机号码"></el-input>
                 </el-form-item>
 
+<!--                用户电子邮箱-->
                 <el-form-item prop="email">
-                    <el-input
-                            type="email"
-                            v-model="ReginForm.email"
-                            placeholder="电子邮箱">
-                    </el-input>
+                    <el-input type="email" v-model="ReginForm.email" placeholder="电子邮箱"></el-input>
                 </el-form-item>
 
+<!--                用户性别-->
                 <el-form-item prop="sex">
                     <el-select v-model="ReginForm.gender"  placeholder="请选择性别">
                         <el-option label="男" value="男"></el-option>
@@ -56,14 +38,9 @@
                     </el-select>
                 </el-form-item>
 
+<!--                注册按钮-->
                 <el-form-item >
-                    <el-button
-                            type="success"
-                            class="submitBtn"
-                            round
-                            @click="submit">
-                        注册
-                    </el-button>
+                    <el-button type="success" class="submitBtn" round @click="submit">注册</el-button>
                 </el-form-item>
             </el-form>
         </el-main>
@@ -74,6 +51,8 @@
     export default {
         name: "Register",
         data () {
+
+            // 验证再次输入密码与第一次相同
             let confirmpasswordCheck = (rule, value, callback) => {
                 if (value === '') {
                     return callback(new Error('密码是必须的'))
@@ -84,6 +63,7 @@
                 }
             };
 
+            // 验证用户输入手机号码的格式是否正确
             let telCheck = (rule, value, callback) => {
                 if (value === '') {
                     return callback(new Error('手机号码是必须的'))
@@ -97,17 +77,38 @@
             };
 
             return {
+
+                // 用户注册表单
                 ReginForm: {
+
+                    // 用户id，默认为null，传入后端数据库会id自增重新赋值
                     userid:null,
+
+                    // 用户名
                     username: '',
+
+                    // 用户密码
                     password: '',
+
+                    // 用户再次确认密码
                     confirmpassword: '',
+
+                    // 用户手机号码
                     tel: '',
+
+                    // 用户电子邮箱
                     email: '',
+
+                    // 用户性别
                     gender: ''
                 },
+
+                // 加载中
                 logining: false,
+
+                // 输入字段验证规则
                 rule: {
+
                     username: [
                         {
                             required: true,
@@ -117,6 +118,7 @@
                             trigger: 'blur'
                         }
                     ],
+
                     password: [
                         {
                             required: true,
@@ -124,6 +126,7 @@
                             trigger: 'blur'
                         }
                     ],
+
                     confirmpassword: [
                         {
                             required: true,
@@ -132,6 +135,7 @@
                             trigger: 'blur'
                         }
                     ],
+
                     tel: [
                         {
                             required: true,
@@ -139,6 +143,7 @@
                             trigger: 'blur'
                         }
                     ],
+
                     email: [
                         {
                             required: true,
@@ -147,6 +152,7 @@
                             trigger: 'blur'
                         }
                     ],
+
                     gender: [
                         {
                             required: true,
@@ -158,6 +164,8 @@
             }
         },
         methods: {
+
+            // 用户提交信息表单进行注册
             submit () {
                 this.$refs.ReginForm.validate(valid => {
                     if (valid) {
@@ -173,12 +181,14 @@
                                 gender:this.ReginForm.gender},
                         }).then(res => {
                             console.log(res);
+                            alert("注册成功，请返回登录")
                             this.$router.push("/user/login");
                         }).catch(error => {
                             console.log(error);
                         })
                     } else {
-                        console.log('submit err')
+                        alert("注册失败，请重新注册")
+                        console.log('注册失败')
                     }
                 })
             },
