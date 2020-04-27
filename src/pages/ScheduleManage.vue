@@ -1,5 +1,5 @@
 <template>
-    
+    <p>排片管理</p>
 </template>
 
 <script>

@@ -7,6 +7,7 @@ export default new Vuex.Store({
     state:{
         userid: null,
         islogin: false,
+
     },
 
     modules: {
@@ -22,6 +23,7 @@ export default new Vuex.Store({
             state.islogin = !state.islogin;
         },
 
+
     },
     getters:{
 
@@ -32,5 +34,7 @@ export default new Vuex.Store({
         getIsLogin(state){
             return state.islogin;
         },
+
+
     }
 });

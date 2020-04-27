@@ -31,7 +31,7 @@
                 </el-form-item>
 
 <!--                用户性别-->
-                <el-form-item prop="sex">
+                <el-form-item prop="gender">
                     <el-select v-model="ReginForm.gender"  placeholder="请选择性别">
                         <el-option label="男" value="男"></el-option>
                         <el-option label="女" value="女"></el-option>

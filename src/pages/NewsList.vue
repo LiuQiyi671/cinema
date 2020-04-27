@@ -66,7 +66,7 @@
                     for (let i = 0; i < res.data.length; i++) {
                         this.allNewsList_Title.push(res.data[i].newstitle);
                         this.allNewsList_News.push(res.data[i].news);
-                        this.allNewsList_AddTime.push(res.data[i].newsaddtime.slice(0, 19).replace("T", " "));
+                        this.allNewsList_AddTime.push(res.data[i].newsaddtime);
                     }
                 }).catch(error => {
                     console.log(error);

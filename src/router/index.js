@@ -10,6 +10,10 @@ import UserManage from "@/pages/UserManage";
 import AdminAddMovie from "@/pages/AdminAddMovie";
 import Home from "@/pages/Home";
 import UserInfo from "@/pages/UserInfo";
+import ScheduleManage from "@/pages/ScheduleManage";
+import MovieManage from "@/pages/MovieManage";
+import NewsManage from "@/pages/NewsManage";
+import OrderManage from "@/pages/OrderManage";
 
 Vue.use(Router);
 
@@ -50,6 +54,22 @@ const routes = [
     {
         path: '/admin/user_manage',
         component: UserManage
+    },
+    {
+        path: '/admin/movie_manage',
+        component: MovieManage
+    },
+    {
+        path: '/admin/schedule_manage',
+        component: ScheduleManage
+    },
+    {
+        path: '/admin/news_manage',
+        component: NewsManage
+    },
+    {
+        path: '/admin/order_manage',
+        component: OrderManage
     },
     {
         path:'/admin/addmovie',

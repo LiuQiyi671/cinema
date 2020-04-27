@@ -1,5 +1,5 @@
 <template>
-    
+    <p>影片管理</p>
 </template>
 
 <script>
