@@ -234,8 +234,7 @@
 
             // 获取全部热映影片列表
             getMovieList(movieclassify){
-                window.localStorage.setItem("movieclassify",movieclassify);
-                this.$router.push('/user/movielist');
+                this.$router.push({ name: 'movielist', params: { movieclassify:movieclassify }})
             },
 
 

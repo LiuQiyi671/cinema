@@ -16,12 +16,11 @@
             </el-dropdown>
         </div>
 
+<!--        热映影片 or 即将上映影片 展示单选框-->
         <el-radio-group style="margin-top: 150px; margin-left: 20px" v-model="movieclassify">
-            <el-radio-button label="热映影片"></el-radio-button>
-            <el-radio-button label="即将上映"></el-radio-button>
+            <el-radio-button label="热映影片" @click.native="goHotMovie"></el-radio-button>
+            <el-radio-button label="即将上映" @click.native="goUpcomingMovie"></el-radio-button>
         </el-radio-group>
-
-<!--        <h3 style="margin-top: 150px; margin-left: 20px">{{movieclassify}}</h3>-->
 
 <!--        热映影片，即将上映影片展示区域-->
         <div class="movie_content">
@@ -37,8 +36,6 @@
                 </el-col>
             </el-row>
         </div>
-
-
     </div>
 </template>
 
@@ -51,7 +48,7 @@
             return {
 
                 // 影片类型：热映影片 or 即将上映
-                movieclassify: window.localStorage.getItem("movieclassify"),
+                movieclassify: '',
 
                 // 影片数量
                 MovieNum: '',
@@ -69,25 +66,38 @@
         },
         created() {
 
+            // 获取影片类型
+            this.movieclassify = this.$route.params.movieclassify;
+
             // 获取登录状态，判断是否需要登录，根据状态显示按钮
             this.islogin = window.localStorage.getItem("islogin");
 
-            // 如果
-            if (window.localStorage.getItem("movieclassify") === '热映影片') {
+            // 动态路由 判断传参是否为“热映影片”，获取热映影片列表
+            if (this.$route.params.movieclassify === '热映影片') {
                 this.getAllHotMovie();
             }
-            if (window.localStorage.getItem("movieclassify") === '即将上映') {
+
+            // 动态路由 判断传参是否为“即将上映”，获取即将上映影片列表
+            if (this.$route.params.movieclassify === '即将上映') {
                 this.getAllUpcomingMovie();
             }
+
         },
         methods: {
 
-            // refresh(movieclassify){
-            //     window.localStorage.setItem('movieclassify',movieclassify);
-            //     this.$router.go(0);
-            //     console.log(movieclassify);
-            // },
+            // 根据单选框所选类型，获取热映影片列表
+            goHotMovie(){
+                this.$router.push({ name: 'movielist', params: { movieclassify:'热映影片' }});
+                this.$router.go(0);
+            },
 
+            // 根据单选框所选类型，获取即将上映影片列表
+            goUpcomingMovie(){
+                this.$router.push({ name: 'movielist', params: { movieclassify:'即将上映' }});
+                this.$router.go(0);
+            },
+
+            // 获取热映影片列表
             getAllHotMovie() {
                 axios({
                     method: 'get',
@@ -104,6 +114,7 @@
                 })
             },
 
+            // 获取即将上映影片列表
             getAllUpcomingMovie() {
                 axios({
                     method: 'get',

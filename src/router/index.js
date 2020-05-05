@@ -42,7 +42,8 @@ const routes = [
         component: NewsList,
     },
     {
-        path: '/user/movielist',
+        name:'movielist',
+        path: '/user/movielist/:movieclassify',
         component: MovieList,
     },
 
