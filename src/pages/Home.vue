@@ -9,9 +9,9 @@
             <el-dropdown style="position: absolute; margin-top: 20px; margin-left: 1250px" placement="bottom">
                 <el-button type="info" icon="el-icon-user-solid" circle></el-button>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-show="getIsLogin" @click.native="userInfo">我的</el-dropdown-item>
-                    <el-dropdown-item v-show="!getIsLogin" @click.native="userLogin">登录</el-dropdown-item>
-                    <el-dropdown-item v-show="getIsLogin" @click.native="userLogout">退出</el-dropdown-item>
+                    <el-dropdown-item v-show="this.islogin" @click.native="userInfo">我的</el-dropdown-item>
+                    <el-dropdown-item v-show="!this.islogin" @click.native="userLogin">登录</el-dropdown-item>
+                    <el-dropdown-item v-show="this.islogin" @click.native="userLogout">退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -30,9 +30,9 @@
         <div class="movie_content">
 
             <!--            热映影片部分-->
-            <p style="margin-left: 70px; font-size: 24px;color: #ff0000;">正在热映（{{this.hotMovieNum}}部)
+            <p style="margin-left: 70px; font-size: 24px;color: #ff0000;">热映影片（{{this.hotMovieNum}}部)
                 <el-button type="text" style="margin-left: 750px; font-size: 20px; color: #ff0000;"
-                           @click="getAllHotMovie">全部>>
+                           @click="getMovieList('热映影片')">全部>>
                 </el-button>
             </p>
 
@@ -51,7 +51,7 @@
             <!--             即将上映影片部分-->
             <p style="margin-left: 70px; font-size: 24px;color: #ff0000;">即将上映（{{this.upcomingMovieNum}}部)
                 <el-button type="text" style="margin-left: 750px; font-size: 20px; color: #ff0000;"
-                           @click="getAllUpcomingMovie">全部>>
+                           @click="getMovieList('即将上映')">全部>>
                 </el-button>
             </p>
 
@@ -111,6 +111,9 @@
 
                 //即将上映影片信息
                 shortUpcomingMovieInfoList: [],
+
+                // 登录状态
+                islogin:false,
             }
         },
         created() {
@@ -126,6 +129,9 @@
 
             //获取前十条资讯列表
             this.getShortNewsList();
+
+            // 获取登录状态，判断是否需要登录，根据状态显示按钮
+            this.islogin = window.localStorage.getItem("islogin");
 
         },
         methods: {
@@ -221,32 +227,20 @@
 
             //islogin为true，用户退出系统
             userLogout(){
-                // this.$store.commit("Userid",null);
-                // this.$store.commit("Islogin");
+                window.localStorage.removeItem("islogin");
+                window.localStorage.removeItem("userid");
                 this.$router.go(0);
             },
 
             // 获取全部热映影片列表
-            // getAllHotMovie(){
-            //     this.$router.push('/user/movielist');
-            // },
-
-            // 获取全部即将上映影片列表
-            // getAllUpcomingMovie(){
-            //     this.$router.push('/user/movielist');
-            // }
-        },
-        computed: {
-            //获取公共状态管理store.js里的用户id:userid
-            getUserId() {
-                return this.$store.getters.getUserId;
+            getMovieList(movieclassify){
+                window.localStorage.setItem("movieclassify",movieclassify);
+                this.$router.push('/user/movielist');
             },
 
-            //获取公共状态管理store.js里的登录状态:islogin
-            getIsLogin() {
-                return this.$store.getters.getIsLogin;
-            }
+
         },
+
     }
 </script>
 

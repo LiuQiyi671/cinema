@@ -42,8 +42,8 @@
                     },
                 }).then(res => {
                     if (res.data !== '') {
-                        this.$store.commit("Userid",res.data);
-                        this.$store.commit("Islogin");
+                        window.localStorage.setItem("userid",res.data.userid);
+                        window.localStorage.setItem("islogin", true);
                         this.$router.push('/home');
                     }
                     else {

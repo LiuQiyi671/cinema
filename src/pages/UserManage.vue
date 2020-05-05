@@ -183,6 +183,7 @@
                     this.pages = res.data.pages;
                     this.total = res.data.total;
                     for(let i=0; i<res.data.size; i++){
+                        console.log(res.data.records[i]);
                         this.userList.push(res.data.records[i]);
                     }
                 }).catch(error => {
