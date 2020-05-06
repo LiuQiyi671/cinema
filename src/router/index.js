@@ -14,6 +14,8 @@ import ScheduleManage from "@/pages/ScheduleManage";
 import MovieManage from "@/pages/MovieManage";
 import NewsManage from "@/pages/NewsManage";
 import OrderManage from "@/pages/OrderManage";
+import MovieInfo from "@/pages/MovieInfo";
+import MovieTicket from "@/pages/MovieTicket";
 
 Vue.use(Router);
 
@@ -46,6 +48,17 @@ const routes = [
         path: '/user/movielist/:movieclassify',
         component: MovieList,
     },
+    {
+        name:'moviedetail',
+        path: '/user/moviedetail/:movieid',
+        component: MovieInfo,
+    },
+    {
+        name:'movieticket',
+        path: '/user/movieticket/:movieid',
+        component: MovieTicket,
+    },
+
 
     // 管理员系统前端路由
     {

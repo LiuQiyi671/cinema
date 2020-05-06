@@ -40,7 +40,7 @@
                 <el-col :span="6" v-for=" (i , index)  in 8 " :offset="0" :key="index">
                     <el-card class="movie_card">
                         <p>{{shortHotMovieInfoList[index].moviename}}</p>
-                        <img :src="shortHotMovieUrlList[index]" height="220" width="100%">
+                        <img :src="shortHotMovieUrlList[index]" height="220" width="100%" @click="getMovieDatail(shortHotMovieInfoList[index].movieid)">
                         <p>电影类型：{{shortHotMovieInfoList[index].movietype}}</p>
                         <p>电影主演：{{shortHotMovieInfoList[index].movieactor}}</p>
                         <p>发行时间：{{shortHotMovieInfoList[index].moviepublicdate}}</p>
@@ -59,7 +59,7 @@
                 <el-col :span="6" v-for=" (i , index)  in 8 " :offset="0" :key="index">
                     <el-card class="movie_card">
                         <p>{{shortUpcomingMovieInfoList[index].moviename}}</p>
-                        <img :src="shortUpcomingMovieUrlList[index]" height="220" width="100%">
+                        <img :src="shortUpcomingMovieUrlList[index]" height="220" width="100%" @click="getMovieDatail(shortUpcomingMovieInfoList[index].movieid)">
                         <p>电影类型：{{shortUpcomingMovieInfoList[index].movietype}}</p>
                         <p>电影主演：{{shortUpcomingMovieInfoList[index].movieactor}}</p>
                         <p>上映时间：{{shortUpcomingMovieInfoList[index].moviepublicdate}}</p>
@@ -235,6 +235,11 @@
             // 获取全部热映影片列表
             getMovieList(movieclassify){
                 this.$router.push({ name: 'movielist', params: { movieclassify:movieclassify }})
+            },
+
+            // 获取影片信息详情
+            getMovieDatail(movieid){
+                this.$router.push({ name: 'moviedetail', params: { movieid:movieid }});
             },
 
 

@@ -28,7 +28,7 @@
                 <el-col :span="4" v-for=" (i , index)  in MovieNum " :offset="0" :key="index">
                     <el-card class="movie_card">
                         <p>{{MovieInfoList[index].moviename}}</p>
-                        <img :src="MovieUrlList[index]" height="220" width="100%">
+                        <img :src="MovieUrlList[index]" height="220" width="100%" @click="getMovieDatail(MovieInfoList[index].movieid)">
                         <p>电影类型：{{MovieInfoList[index].movietype}}</p>
                         <p>电影主演：{{MovieInfoList[index].movieactor}}</p>
                         <p>发行时间：{{MovieInfoList[index].moviepublicdate}}</p>
@@ -159,6 +159,11 @@
                 window.localStorage.removeItem("islogin");
                 window.localStorage.removeItem("userid");
                 this.$router.go(0);
+            },
+
+            // 获取影片信息详情
+            getMovieDatail(movieid){
+                this.$router.push({ name: 'moviedetail', params: { movieid:movieid }});
             },
 
 

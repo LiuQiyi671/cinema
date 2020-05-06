@@ -35,7 +35,7 @@
             <el-col :span="4" v-for=" (i , index)  in wishmovieNum " :offset="0" :key="index">
                 <el-card class="movie_card">
                     <p>{{wishmovieList[index].moviename}}</p>
-                    <img :src="wishmovieUrlList[index]" height="220" width="100%">
+                    <img :src="wishmovieUrlList[index]" height="220" width="100%" @click="getMovieDatail(wishmovieList[index].movieid)">
                     <p>电影类型：{{wishmovieList[index].movietype}}</p>
                     <p>电影主演：{{wishmovieList[index].movieactor}}</p>
                     <p>发行时间：{{wishmovieList[index].moviepublicdate}}</p>
@@ -229,9 +229,15 @@
                 }).catch(error => {
                     console.log(error);
                 })
-            }
-        },
+            },
 
+            // 获取影片信息详情
+            getMovieDatail(movieid){
+                this.$router.push({ name: 'moviedetail', params: { movieid:movieid }});
+            },
+
+
+        },
     }
 </script>
 
