@@ -34,7 +34,22 @@
                     <p>影片语言：{{movieInfo.movielanguage}}</p>
                     <p>影片时长：{{movieInfo.movieduration}}</p>
                     <p>影片简介：{{movieInfo.moviedescription}}</p>
-                    <el-button type="primary" style="margin-top: 30px; margin-left: 680px" @click="buyTicket">购票</el-button>
+
+                    <!--            影片场次显示表格-->
+                    <div class="schedule_table">
+                        <el-table border stripe :data="scheduleList">
+                            <el-table-column label="日期" align="center" prop=showdate></el-table-column>
+                            <el-table-column label="时间" align="center" prop="showtime"></el-table-column>
+                            <el-table-column label="影厅" align="center" prop="hallname"></el-table-column>
+                            <el-table-column label="票价" align="center" prop="price"></el-table-column>
+                            <el-table-column label="操作" width="200" align="center">
+                                <template slot-scope="scope" v-if="scope.row">
+                                    <el-button type="primary"  @click="buyTicket(scope.row.scheduleid)">购票</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+<!--                    <el-button type="primary" style="margin-top: 30px; margin-left: 680px" @click="buyTicket">购票</el-button>-->
                 </el-col>
             </el-row>
         </div>
@@ -70,6 +85,8 @@
                 // 判断当前影片是否存在于用户想看影片列表的状态
                 isInWishmovieList: false,
 
+                scheduleList:[],
+
             }
         },
         created() {
@@ -85,6 +102,9 @@
 
             // 获取想看影片wishmovieid列表
             this.getWishmovieIdList();
+
+            // 根据影片id获取所有场次信息
+            this.getAllScheduleInfo();
 
 
         },
@@ -183,8 +203,23 @@
             },
 
             // 用户购票，跳转到购票页面
-            buyTicket(){
-                this.$router.push({name:'movieticket',params:{'movieid':this.$route.params.movieid}})
+            buyTicket(scheduleid){
+                this.$router.push({name:'movieseat',params:{'scheduleid':scheduleid,'moviename':this.movieInfo.moviename}})
+            },
+
+            // 根据影片id获取所有场次信息
+            getAllScheduleInfo(){
+                axios({
+                    method: 'get',
+                    url: this.$axios.defaults.baseURL + '/schedule/schedule_list',
+                    params:{id:this.$route.params.movieid}
+                }).then(res => {
+                    for(let i=0; i<res.data.length; i++){
+                        this.scheduleList.push(res.data[i]);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
             },
 
 
@@ -218,6 +253,10 @@
 
     .movie_content {
         margin-top: 140px;
+    }
+
+    .schedule_table{
+        margin-top: 30px;
     }
 
 

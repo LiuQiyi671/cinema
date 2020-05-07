@@ -15,7 +15,7 @@ import MovieManage from "@/pages/MovieManage";
 import NewsManage from "@/pages/NewsManage";
 import OrderManage from "@/pages/OrderManage";
 import MovieInfo from "@/pages/MovieInfo";
-import MovieTicket from "@/pages/MovieTicket";
+import MovieSeat from "@/pages/MovieSeat";
 
 Vue.use(Router);
 
@@ -54,9 +54,9 @@ const routes = [
         component: MovieInfo,
     },
     {
-        name:'movieticket',
-        path: '/user/movieticket/:movieid',
-        component: MovieTicket,
+        name:'movieseat',
+        path: '/user/movieseat/:scheduleid',
+        component: MovieSeat,
     },
 
 
