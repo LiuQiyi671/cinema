@@ -11,11 +11,12 @@ import AdminAddMovie from "@/pages/AdminAddMovie";
 import Home from "@/pages/Home";
 import UserInfo from "@/pages/UserInfo";
 import ScheduleManage from "@/pages/ScheduleManage";
-import MovieManage from "@/pages/MovieManage";
 import NewsManage from "@/pages/NewsManage";
 import OrderManage from "@/pages/OrderManage";
 import MovieInfo from "@/pages/MovieInfo";
 import MovieSeat from "@/pages/MovieSeat";
+import HotMovieManage from "@/pages/HotMovieManage";
+import UpcomingMovieManage from "@/pages/UpcomingMovieManage";
 
 Vue.use(Router);
 
@@ -75,8 +76,12 @@ const routes = [
         component: UserManage
     },
     {
-        path: '/admin/movie_manage',
-        component: MovieManage
+        path: '/admin/hot_movie_manage',
+        component: HotMovieManage
+    },
+    {
+        path: '/admin/upcoming_movie_manage',
+        component: UpcomingMovieManage
     },
     {
         path: '/admin/schedule_manage',

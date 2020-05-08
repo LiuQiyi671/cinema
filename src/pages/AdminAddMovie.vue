@@ -1,17 +1,28 @@
 <template>
-    <div>
-        <el-form ref="ruleForm" label-width="110px" label-position="left" :model="form" v-loading="loading">
-            <el-form-item style="border-right-width:220px" label="影片名称">
-                <el-input style="width:220px" v-model="form.moviename"></el-input>
+    <div class="container">
+
+        <!--        导航头header部分-->
+        <div class="header">
+            <img style="margin-left: 70px; margin-top: 15px" src="../assets/img/logo.png" height="50" width="50">
+            <span slot="title" class="title">UPC Online</span>
+        </div>
+
+<!--        影片添加标题-->
+        <h3 style="margin-top: 90px; margin-left: 20px">添加影片</h3>
+
+<!--        影片添加表格-->
+        <el-form style="margin-top: 10px; margin-left: 450px" label-width="110px" label-position="left" :model="form">
+            <el-form-item label="影片名称">
+                <el-input style="width:220px" v-model="form.moviename" clearable></el-input>
             </el-form-item>
             <el-form-item label="影片类型">
-                <el-select v-model="form.movieclassify" placeholder="请选择影片类型">
+                <el-select style="width:220px" v-model="form.movieclassify" placeholder="请选择影片类型">
                     <el-option label="热映影片" value="热映影片"></el-option>
                     <el-option label="即将上映" value="即将上映"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item style="width:330px" label="影片导演">
-                <el-input v-model="form.moviedirector"></el-input>
+            <el-form-item label="影片导演">
+                <el-input style="width:220px" v-model="form.moviedirector" clearable></el-input>
             </el-form-item>
             <el-form-item label="影片题材">
                 <el-radio-group style="width:540px" v-model="form.movietype">
@@ -64,29 +75,29 @@
                     <el-radio-button label="其他" value="其他"></el-radio-button>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item style="width:330px" label="影片时长">
-                <el-input v-model="form.movieduration">分钟</el-input>
+            <el-form-item label="影片时长">
+                <el-input style="width:220px" v-model="form.movieduration" placeholder="请输入分钟数" ></el-input>
             </el-form-item>
             <el-form-item label="影片主演">
-                <el-input v-model="form.movieactor"></el-input>
+                <el-input style="width:220px" v-model="form.movieactor" clearable></el-input>
             </el-form-item>
             <el-form-item label="影片语言">
-                <el-input v-model="form.movielanguage"></el-input>
+                <el-input style="width:220px" v-model="form.movielanguage" clearable></el-input>
             </el-form-item>
             <el-form-item label="影片上映时间">
                 <el-date-picker
-                        v-model="form.movieshowtime"
+                        v-model="form.moviepublicdate"
                         type="date"
+                        value-format="yyyy-MM-dd"
                         placeholder="选择影片上映日期">
                 </el-date-picker>
             </el-form-item>
             <el-form-item label="影片简介">
-                <el-input v-model="form.moviedescription"></el-input>
+                <el-input style="width:550px" type="textarea" :rows="10" v-model="form.moviedescription" clearable></el-input>
             </el-form-item>
-
-
             <el-form-item label="电影封面图片">
                 <el-upload
+                        name="file"
                         action="http://localhost:8088/api/admin/movie/add_movie"
                         ref="upload"
                         :class="{ disabled: uploadDisabled }"
@@ -103,14 +114,16 @@
                 </el-upload>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                <el-button @click="reset">重置</el-button>
+                <el-button type="primary" @click="onSubmit">添加影片</el-button>
+                <el-button @click="reset">清除图片</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         name: "AdminAddMovie",
         data() {
@@ -125,15 +138,17 @@
                     movieactor: "",
                     movielanguage: "",
                     moviepublicdate: "",
-                    moviedescription: "",
                     file: "",
-                    movieid: null,
+                    moviedescription: "",
+                    movieid: 0,
+                    moviewishpeoplenum: 0,
                 },
-                loading: false,
+
                 uploadDisabled: false,
             };
         },
         methods: {
+
             handleChange(file, fileList) {
                 if (file.size > 1024 * 1024 * 4) {
                     this.$refs.upload.clearFiles();
@@ -147,36 +162,38 @@
                     this.form.file = file.raw; //将上传文件付给表单的字段
                 }
             },
+
             handleRemove(file, fileList) {
                 console.log("handleRemove", file);
                 this.uploadDisabled = fileList.length >= 1;
             },
-            onSubmit() {
-                this.$refs.ruleForm.validate(valid => {
-                    if (valid) {
-                        this.loading = true;
-                        let formData = new FormData();
-                        for (let key in this.form) {
-                            formData.append(key, this.form[key]);
-                            formData.append("moviewishpeoplenum",0);
-                        }
 
-                        this.$axios({
-                            method: "post",
-                            url:this.$axios.defaults.baseURL+"/admin/movie/add_movie",
-                            headers: {
-                                "Content-Type": "multipart/form-data"
-                            },
-                            data: formData
-                        }).then((res) => {
-                            console.log(res);
-                        });
-                        this.loading = false;
-                    } else {
-                        return false;
+            onSubmit() {
+
+                let formData = new FormData();
+                for (let key in this.form) {
+                    if(key==="movieduration"){
+                        formData.append(key, this.form[key] + "分钟");
                     }
+                    else{
+                        formData.append(key, this.form[key]);
+                    }
+                }
+
+                axios({
+                    method: "post",
+                    url: this.$axios.defaults.baseURL + "/admin/movie/add_movie",
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                    data: formData
+                }).then((res) => {
+                    console.log(res);
+                }).catch(error => {
+                    console.log(error);
                 });
             },
+
             reset() {
                 this.$refs.upload.clearFiles();
                 this.uploadDisabled = false;
@@ -187,7 +204,31 @@
 </script>
 
 <style>
+
+    .container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header {
+        position: absolute;
+        height: 80px;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 0 8px 1px #ccc;
+    }
+
+    .title {
+        position: absolute;
+        margin-top: 15px;
+        padding-left: 25px;
+        font-size: 40px;
+        font-weight: bolder;
+    }
+
     .disabled .el-upload--picture-card {
         display: none;
     }
+
 </style>

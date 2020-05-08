@@ -24,10 +24,11 @@
                             <span slot="title">用户管理</span>
                         </el-menu-item>
 
-                        <el-menu-item index="/movie_manage" @click.native="handleMenuItemClick('/movie_manage')">
-                            <i class="el-icon-video-camera-solid"></i>
-                            <span slot="title">电影管理</span>
-                        </el-menu-item>
+                        <el-submenu index="/movie_manage" >
+                            <span slot="title"><i style="color: black" class="el-icon-video-camera-solid"></i>电影管理</span>
+                            <el-menu-item index="/hot_movie_manage" @click.native="handleMenuItemClick('/hot_movie_manage')">热映影片</el-menu-item>
+                            <el-menu-item index="/upcoming_movie_manage" @click.native="handleMenuItemClick('/upcoming_movie_manage')">即将上映</el-menu-item>
+                        </el-submenu>
 
                         <el-menu-item index="/movie_schedule" @click.native="handleMenuItemClick('/schedule_manage')">
                             <i class="el-icon-s-fold"></i>
@@ -88,7 +89,7 @@
 
     .container {
         position: absolute;
-        margin-top: 30px;
+        margin-top: 110px;
         margin-left: 160px;
     }
 

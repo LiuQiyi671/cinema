@@ -35,8 +35,7 @@
         <!--        下单购票信息-->
         <h3 style="font-size: 20px; color: red; margin-left: 60%">{{this.$route.params.moviename}}</h3>
         <h3 style="font-size: 20px; margin-left: 60%">影厅：{{scheduleInfo.hallname}}</h3>
-        <h3 style="font-size: 20px; margin-left: 60%">
-            场次：{{scheduleInfo.showdate}}&nbsp;&nbsp;{{scheduleInfo.showtime}}</h3>
+        <h3 style="font-size: 20px; margin-left: 60%">场次：{{scheduleInfo.showdate}}&nbsp;&nbsp;{{scheduleInfo.showtime}}</h3>
         <h3 style="font-size: 20px; margin-left: 60%">票价：{{scheduleInfo.price}}元</h3>
         <h3 style="font-size: 20px; margin-left: 60%">选座：</h3>
         <el-row style="margin-left:63%">
