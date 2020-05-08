@@ -1,10 +1,10 @@
 <template>
-    <p>影片管理</p>
+    <p>即将上映影片管理</p>
 </template>
 
 <script>
     export default {
-        name: "MovieManage"
+        name: "UpcomingMovieManage"
     }
 </script>
 
