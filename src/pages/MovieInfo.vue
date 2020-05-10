@@ -85,6 +85,7 @@
                 // 判断当前影片是否存在于用户想看影片列表的状态
                 isInWishmovieList: false,
 
+                // 此影片所有排片列表
                 scheduleList:[],
 
             }

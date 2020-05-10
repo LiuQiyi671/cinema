@@ -17,6 +17,7 @@ import MovieInfo from "@/pages/MovieInfo";
 import MovieSeat from "@/pages/MovieSeat";
 import HotMovieManage from "@/pages/HotMovieManage";
 import UpcomingMovieManage from "@/pages/UpcomingMovieManage";
+import AdminEditMovie from "@/pages/AdminEditMovie";
 
 Vue.use(Router);
 
@@ -98,6 +99,11 @@ const routes = [
     {
         path:'/admin/addmovie',
         component: AdminAddMovie
+    },
+    {
+        name: 'AdminEditMovie',
+        path:'/admin/editmovie',
+        component: AdminEditMovie
     }
 
 

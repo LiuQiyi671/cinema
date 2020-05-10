@@ -7,10 +7,10 @@
             <span slot="title" class="title">UPC Online</span>
         </div>
 
-<!--        影片添加标题-->
-        <h3 style="margin-top: 90px; margin-left: 20px">添加影片</h3>
+        <!--        影片添加标题-->
+        <h3 style="margin-top: 90px; margin-left: 20px">查看/更新影片</h3>
 
-<!--        影片添加表格-->
+        <!--        影片添加表格-->
         <el-form style="margin-top: 10px; margin-left: 450px" label-width="110px" label-position="left" :model="form">
             <el-form-item label="影片名称">
                 <el-input style="width:220px" v-model="form.moviename" clearable></el-input>
@@ -81,7 +81,7 @@
             </el-form-item>
 
             <el-form-item label="影片时长">
-                <el-input style="width:220px" v-model="form.movieduration" placeholder="请输入分钟数" ></el-input>
+                <el-input style="width:220px" v-model="form.movieduration" placeholder="请输入分钟数"></el-input>
             </el-form-item>
 
             <el-form-item label="影片主演">
@@ -102,10 +102,15 @@
             </el-form-item>
 
             <el-form-item label="影片简介">
-                <el-input style="width:550px" type="textarea" :rows="10" v-model="form.moviedescription" clearable></el-input>
+                <el-input style="width:550px" type="textarea" :rows="10" v-model="form.moviedescription"
+                          clearable></el-input>
             </el-form-item>
 
-            <el-form-item label="电影封面图片">
+            <el-form-item label="原电影封面图片">
+                <img :src="movieUrl" height="148" width="148">
+            </el-form-item>
+
+            <el-form-item label="重新上传封面图">
                 <el-upload
                         name="file"
                         action="http://localhost:8088/api/admin/movie/add_movie"
@@ -125,7 +130,8 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">添加影片</el-button>
+                <el-button @click="cancel">取 消</el-button>
+                <el-button type="primary" @click="onSubmit">更新影片</el-button>
                 <el-button @click="reset">清除图片</el-button>
             </el-form-item>
 
@@ -137,9 +143,10 @@
     import axios from "axios";
 
     export default {
-        name: "AdminAddMovie",
+        name: "AdminEditMovie",
         data() {
             return {
+
                 form: {
                     moviename: "",
                     movieclassify: "",
@@ -152,15 +159,54 @@
                     moviepublicdate: "",
                     file: "",
                     moviedescription: "",
-                    movieid: 0,
-                    moviewishpeoplenum: 0,
+                    movieid: '',
+                    moviewishpeoplenum: '',
                 },
+
+                // 封面图URL
+                movieUrl: '',
 
                 // 添加图片后是否立即上传，值为false，等待其他属性完整之后一起以formdata形式上传
                 uploadDisabled: false,
             };
         },
+
+        created() {
+
+            // 根据movieid数据回显
+            this.editOneHotMovie();
+
+        },
+
         methods: {
+
+            // 根据movieid数据回显
+            editOneHotMovie() {
+                axios({
+                    method: 'get',
+                    url: this.$axios.defaults.baseURL + '/admin/movie/movie_info/',
+                    params: {"id": this.$route.params.movieid}
+                }).then(res => {
+                    let imgurl = "data:image/*;base64," + res.data.file;
+                    this.movieUrl = window.URL.createObjectURL(this.dataURLtoBlob(imgurl));
+                    this.form = res.data;
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+
+            // 将接收的后端base64格式字符串转为blob对象
+            dataURLtoBlob(dataurl) {
+                var arr = dataurl.split(','),
+                    mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]),
+                    n = bstr.length,
+                    u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {type: mime});
+            },
 
             // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
             handleChange(file, fileList) {
@@ -183,28 +229,28 @@
                 this.uploadDisabled = fileList.length >= 1;
             },
 
+            // 取消操作
+            cancel() {
+                this.$router.go(-1);
+            },
+
             // 以formdata格式提交form表单
             onSubmit() {
 
                 let formData = new FormData();
                 for (let key in this.form) {
-                    if(key==="movieduration"){
-                        formData.append(key, this.form[key] + "分钟");
-                    }
-                    else{
-                        formData.append(key, this.form[key]);
-                    }
+                    formData.append(key, this.form[key]);
                 }
 
                 axios({
                     method: "post",
-                    url: this.$axios.defaults.baseURL + "/admin/movie/add_movie",
+                    url: this.$axios.defaults.baseURL + "/admin/movie/update_movie",
                     headers: {
                         "Content-Type": "multipart/form-data"
                     },
                     data: formData
                 }).then((res) => {
-                    alert("影片已成功添加");
+                    alert("影片信息已成功修改");
                     this.$router.push("/admin/home");
                     console.log(res);
                 }).catch(error => {
@@ -218,9 +264,10 @@
                 this.$refs.upload.clearFiles();
                 this.uploadDisabled = false;
                 this.$refs.ruleForm.resetFields();
-            },
+            }
 
-        },
+
+        }
     }
 </script>
 

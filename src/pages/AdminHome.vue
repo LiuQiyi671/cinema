@@ -89,7 +89,7 @@
 
     .container {
         position: absolute;
-        margin-top: 110px;
+        margin-top: 30px;
         margin-left: 160px;
     }
 

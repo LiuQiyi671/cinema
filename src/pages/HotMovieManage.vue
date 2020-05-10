@@ -149,24 +149,16 @@
                 this.$router.push("/admin/addmovie");
             },
 
-            // 打开热映影片查看/更新页面，根据movieid数据回显
+            // 跳转到热映影片查看/更新页面，根据movieid数据回显
             editOneHotMovie(movieid){
-                axios({
-                    method: 'get',
-                    url: this.$axios.defaults.baseURL + '/admin/movie/movie_info/',
-                    params:{"id":movieid}
-                }).then(res => {
-                    console.log(res);
-                }).catch(error => {
-                    console.log(error);
-                })
+                this.$router.push({ name: 'AdminEditMovie', params: { movieid: movieid}});
             },
 
             // 删除某个热映影片
             deleteOneHotMovie(movieid){
                 axios({
                     method: 'post',
-                    url: this.$axios.defaults.baseURL + '/admin/news/delete_movie/',
+                    url: this.$axios.defaults.baseURL + '/admin/movie/delete_movie/',
                     params:{"id":movieid}
                 }).then(res => {
                     console.log(res);
