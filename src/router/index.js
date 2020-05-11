@@ -12,7 +12,6 @@ import Home from "@/pages/Home";
 import UserInfo from "@/pages/UserInfo";
 import ScheduleManage from "@/pages/ScheduleManage";
 import NewsManage from "@/pages/NewsManage";
-import OrderManage from "@/pages/OrderManage";
 import MovieInfo from "@/pages/MovieInfo";
 import MovieSeat from "@/pages/MovieSeat";
 import HotMovieManage from "@/pages/HotMovieManage";
@@ -91,10 +90,6 @@ const routes = [
     {
         path: '/admin/news_manage',
         component: NewsManage
-    },
-    {
-        path: '/admin/order_manage',
-        component: OrderManage
     },
     {
         path:'/admin/addmovie',

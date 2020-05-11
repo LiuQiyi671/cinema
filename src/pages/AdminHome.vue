@@ -40,10 +40,10 @@
                             <span slot="title">资讯管理</span>
                         </el-menu-item>
 
-                        <el-menu-item index="/order_manage" @click.native="handleMenuItemClick('/order_manage')">
-                            <i class="el-icon-s-ticket"></i>
-                            <span slot="title">订单管理</span>
-                        </el-menu-item>
+<!--                        <el-menu-item index="/order_manage" @click.native="handleMenuItemClick('/order_manage')">-->
+<!--                            <i class="el-icon-s-ticket"></i>-->
+<!--                            <span slot="title">订单管理</span>-->
+<!--                        </el-menu-item>-->
                     </el-menu>
                 </div>
             </el-row>

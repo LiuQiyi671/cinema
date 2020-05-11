@@ -72,7 +72,8 @@
             <!--查看此影片所有排片Dialog页面-->
             <div>
                 <el-dialog
-                        style="margin-left: 500px;"
+                        width="700px"
+                        style="margin-left: 420px;"
                         :title="dialog_title"
                         :visible.sync="dialogFormVisible"
                         :modal-append-to-body="false"
@@ -81,11 +82,11 @@
                 >
 
                     <!--            添加影片排片按钮-->
-<!--                    <div class="top">-->
-<!--                        <el-col>-->
-<!--                            <el-button type="primary" size="small" @click="addHotMovieSchedule">添加排片</el-button>-->
-<!--                        </el-col>-->
-<!--                    </div>-->
+                    <!--                    <div class="top">-->
+                    <!--                        <el-col>-->
+                    <!--                            <el-button type="primary" size="small" @click="addHotMovieSchedule">添加排片</el-button>-->
+                    <!--                        </el-col>-->
+                    <!--                    </div>-->
 
                     <!--            所有影片场次显示表格-->
                     <div class="schedule_table">
@@ -93,7 +94,9 @@
                             <el-table-column label="日期" width="100" align="center" prop=showdate></el-table-column>
                             <el-table-column label="时间" align="center" prop="showtime"></el-table-column>
                             <el-table-column label="影厅" align="center" prop="hallname"></el-table-column>
-                            <el-table-column label="票价" align="center" prop="price"></el-table-column>
+                            <el-table-column label="票价/元" align="center" prop="price"></el-table-column>
+                            <el-table-column label="上座率/%" align="center" prop="percent"></el-table-column>
+                            <el-table-column label="总收入/元" align="center" prop="income"></el-table-column>
                             <el-table-column label="操作" width="100" align="center">
                                 <template slot-scope="scope" v-if="scope.row">
                                     <el-button size="mini" type="danger"
@@ -229,6 +232,12 @@
                 // 票价
                 price: '',
 
+                // 本场次上座率
+                percent: '',
+
+                // 本场次总收入
+                income: '',
+
             };
         },
 
@@ -301,6 +310,14 @@
                 }).then(res => {
                     for (let i = 0; i < res.data.length; i++) {
                         this.scheduleList.push(res.data[i]);
+                        if(res.data[i].seat.indexOf(",")===-1){
+                            this.scheduleList[i].percent = 0;
+                            this.scheduleList[i].income = 0;
+                        }
+                        else{
+                            this.scheduleList[i].percent = (res.data[i].seat.split(",").length * 100 / 60).toFixed(2);
+                            this.scheduleList[i].income = (res.data[i].seat.split(",").length * res.data[i].price).toFixed(2);
+                        }
                     }
                 }).catch(error => {
                     console.log(error);
