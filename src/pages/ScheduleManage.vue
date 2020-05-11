@@ -280,7 +280,7 @@
                         "showdate": this.showdate,
                         "showtime": this.showtime,
                         "price": this.price,
-                        "seat": null
+                        "seat": ''
                     }
                 }).then(res => {
                     alert("添加成功");

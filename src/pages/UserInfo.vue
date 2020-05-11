@@ -53,11 +53,11 @@
                 <el-table-column label="放映时间" align="center" prop="showtime"></el-table-column>
                 <el-table-column label="购买票数" align="center" prop="ticketnum"></el-table-column>
                 <el-table-column label="放映展厅" align="center" prop="hallname"></el-table-column>
-                <el-table-column label="座位号" align="center" prop="orderseat"></el-table-column>
+                <el-table-column label="座位号" align="center" prop="orderSeatList"></el-table-column>
                 <el-table-column label="取票号码" align="center" prop="phonecode"></el-table-column>
                 <el-table-column label="操作" width="200" align="center">
                     <template slot-scope="scope">
-                        <p v-if="(scope.row.showdate < date) || (scope.row.showdate = date && scope.row.showtime < time)" style="font-style: italic;color: red">已放映</p>
+                        <p v-if="(scope.row.showdate < date) || (scope.row.showdate === date && scope.row.showtime < time)" style="font-style: italic;color: red">已放映</p>
                         <el-button v-else size="mini" type="danger" @click="withdrawMoney(scope.row.orderid)">退款</el-button>
                     </template>
                 </el-table-column>
@@ -105,6 +105,16 @@
 
                 // 当前时间
                 time:'',
+
+                // 退款订单的详细信息
+                oneOrderInfo:'',
+
+                // 退款后需要更新的座位列表
+                updateSeatInfo:'',
+
+                // 订单座位信息列表，如35->4排6座的形式
+                orderSeatList:[],
+
             };
         },
 
@@ -124,6 +134,8 @@
 
             // 获取当前时间
             this.getTime();
+
+
         },
 
         methods: {
@@ -191,8 +203,14 @@
                 }).then(res => {
                     for(let i=0; i<res.data.length; i++){
                         this.userOrderList.push(res.data[i]);
+                        let z ='';
+                        for(let j=0 ;j<res.data[i].orderseat.split(",").length; j++){
+                            let x = parseInt(res.data[i].orderseat.split(",")[j][0])+1+"排";
+                            let y = parseInt(res.data[i].orderseat.split(",")[j][1])+1+"座 ";
+                            z = z + x + y;
+                            this.userOrderList[i].orderSeatList = z;
+                        }
                     }
-                    console.log(res);
                 }).catch(error => {
                     console.log(error);
                 })
@@ -218,6 +236,43 @@
 
             // 退款操作
             withdrawMoney(orderid){
+                for(let i=0; i<this.userOrderList.length; i++){
+                    if(this.userOrderList[i].orderid === orderid){
+                        this.oneOrderInfo = this.userOrderList[i];
+                    }
+                }
+
+
+                if(this.oneOrderInfo.seat[this.oneOrderInfo.seat.indexOf(this.oneOrderInfo.orderseat)-1]===','){
+                    this.updateSeatInfo = this.oneOrderInfo.seat.slice(0,this.oneOrderInfo.seat.indexOf(this.oneOrderInfo.orderseat)-1)+this.oneOrderInfo.seat.slice(this.oneOrderInfo.seat.indexOf(this.oneOrderInfo.orderseat)+this.oneOrderInfo.orderseat.length,this.oneOrderInfo.seat.length);
+                }
+                else {
+                    this.updateSeatInfo = this.oneOrderInfo.seat.slice(0,this.oneOrderInfo.seat.indexOf(this.oneOrderInfo.orderseat))+this.oneOrderInfo.seat.slice(this.oneOrderInfo.seat.indexOf(this.oneOrderInfo.orderseat)+this.oneOrderInfo.orderseat.length+1,this.oneOrderInfo.seat.length);
+                }
+
+                console.log(this.updateSeatInfo);
+
+                // 本场次的座位需要更新
+                axios({
+                    method: 'post',
+                    url: this.$axios.defaults.baseURL + '/schedule/update_schedule/',
+                    params: {
+                        "scheduleid": this.oneOrderInfo.scheduleid,
+                        "movieid": this.oneOrderInfo.movieid,
+                        "hallname": this.oneOrderInfo.hallname,
+                        "showdate": this.oneOrderInfo.showdate,
+                        "showtime": this.oneOrderInfo.showtime,
+                        "price": this.oneOrderInfo.price,
+                        "seat": this.updateSeatInfo
+                    }
+                }).then(res => {
+                    this.updateSeatInfo = '';
+                    console.log(res);
+                }).catch(error => {
+                    console.log(error);
+                })
+
+                // 根据orderid删除订单
                 axios({
                     method: 'post',
                     url: this.$axios.defaults.baseURL + '/user/withdraw/',

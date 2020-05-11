@@ -206,7 +206,12 @@
                     }
                 }
 
-                this.updateSeatInfo = this.updateSeatInfo + ',' + this.orderSeatInfo;
+                if(this.updateSeatInfo.length===0){
+                    this.updateSeatInfo = this.updateSeatInfo + this.orderSeatInfo;
+                }
+                else {
+                    this.updateSeatInfo = this.updateSeatInfo + ',' + this.orderSeatInfo;
+                }
 
                 // 本场次的座位需要更新
                 axios({
