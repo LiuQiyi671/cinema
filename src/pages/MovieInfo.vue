@@ -21,8 +21,13 @@
             <el-row>
                 <el-col :span="8">
                     <img :src="movieUrl" height="330" width="240" style="margin-left: 200px; margin-top: 30px">
-                    <el-button v-if="isInWishmovieList" type="danger" style="margin-left: 270px; margin-top: 10px" @click="cancelWish">取消想看</el-button>
-                    <el-button v-if="!isInWishmovieList" type="danger" style="margin-left: 280px; margin-top: 10px" @click="wish">想看</el-button>
+                    <p style="margin-left: 290px; margin-top: 10px">{{moviewishpeoplenum}}人想看 </p>
+                    <el-button v-if="isInWishmovieList" type="danger" style="margin-left: 270px; margin-top: 10px"
+                               @click="cancelWish">取消想看
+                    </el-button>
+                    <el-button v-if="!isInWishmovieList" type="danger" style="margin-left: 280px; margin-top: 10px"
+                               @click="wish">想看
+                    </el-button>
                 </el-col>
                 <el-col :span="12">
                     <p style="font-size: 24px; font-weight: bold">{{movieInfo.moviename}}</p>
@@ -44,12 +49,12 @@
                             <el-table-column label="票价" align="center" prop="price"></el-table-column>
                             <el-table-column label="操作" width="200" align="center">
                                 <template slot-scope="scope" v-if="scope.row">
-                                    <el-button type="primary"  @click="buyTicket(scope.row.scheduleid)">购票</el-button>
+                                    <el-button type="primary" @click="buyTicket(scope.row.scheduleid)">购票</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                     </div>
-<!--                    <el-button type="primary" style="margin-top: 30px; margin-left: 680px" @click="buyTicket">购票</el-button>-->
+                    <!--                    <el-button type="primary" style="margin-top: 30px; margin-left: 680px" @click="buyTicket">购票</el-button>-->
                 </el-col>
             </el-row>
         </div>
@@ -77,16 +82,18 @@
                 movieInfo: '',
 
                 // 想看影片id列表
-                wishmovieIdList:[],
+                wishmovieIdList: [],
 
                 // 用户想看影片数量
-                wishmovieNum:'',
+                wishmovieNum: '',
 
                 // 判断当前影片是否存在于用户想看影片列表的状态
                 isInWishmovieList: false,
 
                 // 此影片所有排片列表
-                scheduleList:[],
+                scheduleList: [],
+
+                moviewishpeoplenum: '',
 
             }
         },
@@ -106,6 +113,8 @@
 
             // 根据影片id获取所有场次信息
             this.getAllScheduleInfo();
+
+            this.getWishpeoplenumByMovieid();
 
 
         },
@@ -166,7 +175,7 @@
                     this.wishmovieNum = res.data.length;
                     for (let i = 0; i < res.data.length; i++) {
                         this.wishmovieIdList.push(res.data[i]);
-                        if(this.$route.params.movieid === res.data[i]){
+                        if (this.$route.params.movieid === res.data[i]) {
                             this.isInWishmovieList = true;
                         }
                     }
@@ -175,12 +184,24 @@
                 })
             },
 
+            getWishpeoplenumByMovieid() {
+                axios({
+                    method: 'get',
+                    url: this.$axios.defaults.baseURL + '/user/getmoviewishpeoplenum',
+                    params: {'movieid': this.$route.params.movieid}
+                }).then(res => {
+                    this.moviewishpeoplenum = res.data;
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+
             // 用户取消想看影片
-            cancelWish(){
+            cancelWish() {
                 axios({
                     method: 'post',
                     url: this.$axios.defaults.baseURL + '/user/removewishmovie',
-                    params: {'movieid': this.$route.params.movieid,'userid':this.userid}
+                    params: {'movieid': this.$route.params.movieid, 'userid': this.userid}
                 }).then(res => {
                     console.log(res);
                     this.$router.go(0);
@@ -190,11 +211,11 @@
             },
 
             // 用户添加想看影片
-            wish(){
+            wish() {
                 axios({
                     method: 'post',
                     url: this.$axios.defaults.baseURL + '/user/addwishmovie',
-                    data: {'wishmovieid':0,'movieid': this.$route.params.movieid,'userid':this.userid}
+                    data: {'wishmovieid': 0, 'movieid': this.$route.params.movieid, 'userid': this.userid}
                 }).then(res => {
                     console.log(res);
                     this.$router.go(-1);
@@ -204,18 +225,21 @@
             },
 
             // 用户购票，跳转到购票页面
-            buyTicket(scheduleid){
-                this.$router.push({name:'movieseat',params:{'scheduleid':scheduleid,'moviename':this.movieInfo.moviename}})
+            buyTicket(scheduleid) {
+                this.$router.push({
+                    name: 'movieseat',
+                    params: {'scheduleid': scheduleid, 'moviename': this.movieInfo.moviename}
+                })
             },
 
             // 根据影片id获取所有场次信息
-            getAllScheduleInfo(){
+            getAllScheduleInfo() {
                 axios({
                     method: 'get',
                     url: this.$axios.defaults.baseURL + '/schedule/schedule_list',
-                    params:{id:this.$route.params.movieid}
+                    params: {id: this.$route.params.movieid}
                 }).then(res => {
-                    for(let i=0; i<res.data.length; i++){
+                    for (let i = 0; i < res.data.length; i++) {
                         this.scheduleList.push(res.data[i]);
                     }
                 }).catch(error => {
@@ -256,7 +280,7 @@
         margin-top: 140px;
     }
 
-    .schedule_table{
+    .schedule_table {
         margin-top: 30px;
     }
 
