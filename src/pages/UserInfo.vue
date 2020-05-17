@@ -11,11 +11,19 @@
 
 <!--        个人信息-->
         <div class="user_table">
-            <el-table style="width: 60%" border :data="oneUserInfo">
-                <el-table-column label="用户名" align="center" min-width="20%" prop="username"></el-table-column>
-                <el-table-column label="性别" align="center" min-width="20%" prop="gender"></el-table-column>
-                <el-table-column label="手机号码" align="center" min-width="30%" prop="tel"></el-table-column>
-                <el-table-column label="电子邮箱" align="center" min-width="30%" prop="email"></el-table-column>
+            <el-table style="width: 70%" border :data="oneUserInfo">
+                <el-table-column label="用户名" align="center" min-width="10%" prop="username"></el-table-column>
+                <el-table-column label="性别" align="center" min-width="10%" prop="gender"></el-table-column>
+                <el-table-column label="手机号码" align="center" min-width="15%" prop="tel"></el-table-column>
+                <el-table-column label="电子邮箱" align="center" min-width="25%" prop="email"></el-table-column>
+                <el-table-column label="账户余额" align="center" min-width="10%" prop="money"></el-table-column>
+                <el-table-column label="操作" min-width="35%" align="center">
+                    <template slot-scope="scope" v-if="scope.row">
+                        <el-button size="mini" @click="addmoney(50.00)">充值50</el-button>
+                        <el-button size="mini" @click="addmoney(100.00)">充值100</el-button>
+                        <el-button size="mini" @click="addmoney(200.00)">充值200</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
 
@@ -58,7 +66,7 @@
                 <el-table-column label="操作" width="200" align="center">
                     <template slot-scope="scope">
                         <p v-if="(scope.row.showdate < date) || (scope.row.showdate === date && scope.row.showtime < time)" style="font-style: italic;color: red">已放映</p>
-                        <el-button v-else size="mini" type="danger" @click="withdrawMoney(scope.row.orderid)">退款</el-button>
+                        <el-button v-else size="mini" type="danger" @click="withdrawMoney(scope.row.orderid,scope.row.tickettotalprice)">退款</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -234,8 +242,32 @@
                 this.time = hour+":"+minute+":"+second
             },
 
+            // 用户充值
+            addmoney(money){
+                this.oneUserInfo[0].money = this.oneUserInfo[0].money + money;
+                axios({
+                    method: 'post',
+                    url: this.$axios.defaults.baseURL + '/user/update/',
+                    params:{
+                        "userid":this.oneUserInfo[0].userid,
+                        "username":this.oneUserInfo[0].username,
+                        "password":this.oneUserInfo[0].password,
+                        "tel":this.oneUserInfo[0].tel,
+                        "email":this.oneUserInfo[0].email,
+                        "gender":this.oneUserInfo[0].gender,
+                        "money":this.oneUserInfo[0].money},
+                }).then(res => {
+                    console.log(res);
+                    alert("充值成功！")
+                    // this.$router.go(0);
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+
             // 退款操作
-            withdrawMoney(orderid){
+            withdrawMoney(orderid,tickettotalprice){
+
                 for(let i=0; i<this.userOrderList.length; i++){
                     if(this.userOrderList[i].orderid === orderid){
                         this.oneOrderInfo = this.userOrderList[i];
@@ -267,6 +299,25 @@
                     }
                 }).then(res => {
                     this.updateSeatInfo = '';
+                    console.log(res);
+                }).catch(error => {
+                    console.log(error);
+                })
+
+
+                // 退款至用户账户余额
+                axios({
+                    method: 'post',
+                    url: this.$axios.defaults.baseURL + '/user/update/',
+                    params:{
+                        "userid":this.oneUserInfo[0].userid,
+                        "username":this.oneUserInfo[0].username,
+                        "password":this.oneUserInfo[0].password,
+                        "tel":this.oneUserInfo[0].tel,
+                        "email":this.oneUserInfo[0].email,
+                        "gender":this.oneUserInfo[0].gender,
+                        "money":this.oneUserInfo[0].money+ tickettotalprice},
+                }).then(res => {
                     console.log(res);
                 }).catch(error => {
                     console.log(error);
@@ -322,7 +373,7 @@
 
     .user_table {
         margin-top: 30px;
-        margin-left: 420px;
+        margin-left: 320px;
         font-size: 20px;
     }
 

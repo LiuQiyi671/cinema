@@ -140,6 +140,7 @@
                                         v-model="showdate"
                                         type="date"
                                         value-format="yyyy-MM-dd"
+                                        :picker-options="pickerOptions"
                                         placeholder="请选择影片放映日期">
                                 </el-date-picker>
                             </el-col>
@@ -180,6 +181,11 @@
         components: {AdminHome},
         data() {
             return {
+                pickerOptions: {
+                    disabledDate(v) {
+                        return v.getTime() < new Date().getTime() - 86400000;
+                    }
+                },
 
                 // 是否显示Dialog页面，dialogVisible为true
                 dialogVisible: true,

@@ -49,6 +49,7 @@
                     <el-table-column label="性别" align="center" prop="gender"></el-table-column>
                     <el-table-column label="手机号码" align="center" prop="tel"></el-table-column>
                     <el-table-column label="电子邮箱" align="center" prop="email"></el-table-column>
+                    <el-table-column label="账户余额" align="center" prop="money"></el-table-column>
                     <el-table-column label="操作" width="200" align="center">
                         <template slot-scope="scope" v-if="scope.row">
                             <el-button size="mini" @click="editOneUser(scope.row.userid)">编辑</el-button>
@@ -243,7 +244,8 @@
                         "password":this.oneUserInfo[0].password,
                         "tel":this.oneUserInfo[0].tel,
                         "email":this.oneUserInfo[0].email,
-                        "gender":this.oneUserInfo[0].gender},
+                        "gender":this.oneUserInfo[0].gender,
+                        "money":this.oneUserInfo[0].money},
                 }).then(res => {
                     console.log(res);
                     this.$router.go(0);

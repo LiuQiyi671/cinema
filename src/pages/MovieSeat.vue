@@ -98,6 +98,9 @@
                 // 随机生成的六位数取票码
                 phonecode: '',
 
+                // 订票用户个人信息
+                oneUserInfo:[],
+
             }
         },
         created() {
@@ -141,6 +144,7 @@
                     params: {"id": this.userid}
                 }).then(res => {
                     this.ordertel = res.data.tel;
+                    this.oneUserInfo.push(res.data);
                 }).catch(error => {
                     console.log(error);
                 })
@@ -198,62 +202,90 @@
 
             // 下单支付
             buy() {
-                for (let i = 0; i < this.selectedSeatInfo.length; i++) {
-                    if (i === this.selectedSeatInfo.length - 1) {
-                        this.orderSeatInfo = this.orderSeatInfo + this.selectedSeatInfo[i][0] + this.selectedSeatInfo[i][1];
-                    } else {
-                        this.orderSeatInfo = this.orderSeatInfo + this.selectedSeatInfo[i][0] + this.selectedSeatInfo[i][1] + ',';
+                if(this.oneUserInfo[0].money > this.scheduleInfo.price * this.seatCount){
+                    for (let i = 0; i < this.selectedSeatInfo.length; i++) {
+                        if (i === this.selectedSeatInfo.length - 1) {
+                            this.orderSeatInfo = this.orderSeatInfo + this.selectedSeatInfo[i][0] + this.selectedSeatInfo[i][1];
+                        } else {
+                            this.orderSeatInfo = this.orderSeatInfo + this.selectedSeatInfo[i][0] + this.selectedSeatInfo[i][1] + ',';
+                        }
                     }
+
+                    if(this.updateSeatInfo.length===0){
+                        this.updateSeatInfo = this.updateSeatInfo + this.orderSeatInfo;
+                    }
+                    else {
+                        this.updateSeatInfo = this.updateSeatInfo + ',' + this.orderSeatInfo;
+                    }
+
+                    // 本场次的座位需要更新
+                    axios({
+                        method: 'post',
+                        url: this.$axios.defaults.baseURL + '/schedule/update_schedule/',
+                        params: {
+                            "scheduleid": this.$route.params.scheduleid,
+                            "movieid": this.scheduleInfo.movieid,
+                            "hallname": this.scheduleInfo.hallname,
+                            "showdate": this.scheduleInfo.showdate,
+                            "showtime": this.scheduleInfo.showtime,
+                            "price": this.scheduleInfo.price,
+                            "seat": this.updateSeatInfo
+                        }
+                    }).then(res => {
+                        console.log(res);
+                    }).catch(error => {
+                        console.log(error);
+                    })
+
+                    // 账户余额扣费
+                    this.oneUserInfo[0].money = this.oneUserInfo[0].money - this.scheduleInfo.price * this.seatCount;
+                    axios({
+                        method: 'post',
+                        url: this.$axios.defaults.baseURL + '/user/update/',
+                        params:{
+                            "userid":this.oneUserInfo[0].userid,
+                            "username":this.oneUserInfo[0].username,
+                            "password":this.oneUserInfo[0].password,
+                            "tel":this.oneUserInfo[0].tel,
+                            "email":this.oneUserInfo[0].email,
+                            "gender":this.oneUserInfo[0].gender,
+                            "money":this.oneUserInfo[0].money},
+                    }).then(res => {
+                        console.log(res);
+                    }).catch(error => {
+                        console.log(error);
+                    })
+
+                    // 购票下单
+                    axios({
+                        method: 'post',
+                        url: this.$axios.defaults.baseURL + '/user/addorder/',
+                        data: {
+                            "orderid": 0,
+                            "userid": this.userid,
+                            "scheduleid": this.$route.params.scheduleid,
+                            "tel": this.ordertel,
+                            "orderdate": this.getDate(),
+                            "ticketnum": this.seatCount,
+                            "tickettotalprice": this.scheduleInfo.price * this.seatCount,
+                            "orderseat": this.orderSeatInfo,
+                            "phonecode": this.phonecode
+                        }
+                    }).then(res => {
+                        console.log(res);
+                        alert("买票成功，您的取票码是：" + this.phonecode);
+                        this.$router.push("/home");
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                }
+                else{
+                    alert("账户余额不足，请进行充值！");
                 }
 
-                if(this.updateSeatInfo.length===0){
-                    this.updateSeatInfo = this.updateSeatInfo + this.orderSeatInfo;
-                }
-                else {
-                    this.updateSeatInfo = this.updateSeatInfo + ',' + this.orderSeatInfo;
-                }
 
-                // 本场次的座位需要更新
-                axios({
-                    method: 'post',
-                    url: this.$axios.defaults.baseURL + '/schedule/update_schedule/',
-                    params: {
-                        "scheduleid": this.$route.params.scheduleid,
-                        "movieid": this.scheduleInfo.movieid,
-                        "hallname": this.scheduleInfo.hallname,
-                        "showdate": this.scheduleInfo.showdate,
-                        "showtime": this.scheduleInfo.showtime,
-                        "price": this.scheduleInfo.price,
-                        "seat": this.updateSeatInfo
-                    }
-                }).then(res => {
-                    console.log(res);
-                }).catch(error => {
-                    console.log(error);
-                })
 
-                // 购票下单
-                axios({
-                    method: 'post',
-                    url: this.$axios.defaults.baseURL + '/user/addorder/',
-                    data: {
-                        "orderid": 0,
-                        "userid": this.userid,
-                        "scheduleid": this.$route.params.scheduleid,
-                        "tel": this.ordertel,
-                        "orderdate": this.getDate(),
-                        "ticketnum": this.seatCount,
-                        "tickettotalprice": this.scheduleInfo.price * this.seatCount,
-                        "orderseat": this.orderSeatInfo,
-                        "phonecode": this.phonecode
-                    }
-                }).then(res => {
-                    console.log(res);
-                    alert("买票成功，您的取票码是：" + this.phonecode);
-                    this.$router.push("/home");
-                }).catch(error => {
-                    console.log(error);
-                })
+
             },
 
 
