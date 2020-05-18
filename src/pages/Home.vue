@@ -75,7 +75,7 @@
                 <el-button type="text" class="all_news_list_button" @click="getAllNews">全部>></el-button>
             </div>
             <div v-for="i in 10" :key="i" class="text">
-                <el-link @click="getOneNews(shortNewsList[i-1].newsid)">{{i}}、{{shortNewsList[i-1].newstitle}}</el-link>
+                <el-link :underline="false" @click="getOneNews(shortNewsList[i-1].newsid)">{{i}}、{{shortNewsList[i-1].newstitle}}</el-link>
             </div>
         </el-card>
 

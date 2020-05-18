@@ -153,7 +153,7 @@
       <workItem from="1589453102447" duration="1780000" />
       <workItem from="1589637670422" duration="41000" />
       <workItem from="1589705901117" duration="5822000" />
-      <workItem from="1589774255465" duration="2374000" />
+      <workItem from="1589774255465" duration="3028000" />
     </task>
     <task id="LOCAL-00001" summary="&lt;4.25&gt;">
       <created>1587753806849</created>
@@ -260,7 +260,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589711458023</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="&lt;5.18 home页面的前十条资讯列表shortNewsList，点击打开dialog页面显示资讯内容&gt;">
+      <created>1589777811015</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1589777811015</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -292,7 +299,8 @@
     <MESSAGE value="&lt;5.11 将订单管理模块中的场次上座率，场次总收入放入排片管理模块中，去掉订单管理模块&gt;" />
     <MESSAGE value="&lt;5.14 影片详情页面添加上想看人数的显示&gt;" />
     <MESSAGE value="&lt;5.17 后端user实体增添账户余额money字段后，在个人信息页面显示账户余额信息，添加充值功能，购票时扣费功能，退票时退款功能；管理员添加排片时不允许选择日期在今日日期之前的&gt;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&lt;5.17 后端user实体增添账户余额money字段后，在个人信息页面显示账户余额信息，添加充值功能，购票时扣费功能，退票时退款功能；管理员添加排片时不允许选择日期在今日日期之前的&gt;" />
+    <MESSAGE value="&lt;5.18 home页面的前十条资讯列表shortNewsList，点击打开dialog页面显示资讯内容&gt;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&lt;5.18 home页面的前十条资讯列表shortNewsList，点击打开dialog页面显示资讯内容&gt;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="53" key="#Plugins" timestamp="1587131472256">
@@ -304,10 +312,10 @@
     </state>
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824/-1536.52.1536.1112@0.0.1536.824" timestamp="1587821964043" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1589190695362" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1589711455798">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1589777809206">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1589711455798" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1589777809206" />
     <state x="549" y="153" key="FileChooserDialogImpl" timestamp="1586199247491">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -341,10 +349,10 @@
     </state>
     <state x="270" y="55" key="SettingsEditor/0.0.1536.824/-1536.52.1536.1112@0.0.1536.824" timestamp="1586887173673" />
     <state x="270" y="55" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1586764994267" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1589711469274">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1589777928711">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1589711469274" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1589777928711" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1585072523994">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
