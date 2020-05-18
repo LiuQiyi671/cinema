@@ -75,9 +75,38 @@
                 <el-button type="text" class="all_news_list_button" @click="getAllNews">全部>></el-button>
             </div>
             <div v-for="i in 10" :key="i" class="text">
-                <p>{{i}}、{{shortNewsList[i-1]}}</p>
+                <el-link @click="getOneNews(shortNewsList[i-1].newsid)">{{i}}、{{shortNewsList[i-1].newstitle}}</el-link>
             </div>
         </el-card>
+
+        <!--资讯内容查看Dialog页面-->
+        <div>
+            <el-dialog
+                    style="margin-left: 500px;"
+                    :title="dialog_title"
+                    :visible.sync="dialogFormVisible"
+                    :modal-append-to-body="false"
+                    v-if="dialogFormVisible"
+                    :show-close="false"
+            >
+                <el-form :label-position="labelPosition" label-width="80px">
+                    <el-form-item label="资讯标题" prop="newstitle">
+                        <el-col :span="16">
+                            <el-input type="textarea" :rows="2" v-model="oneNews.newstitle"></el-input>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="资讯内容" prop="news">
+                        <el-col :span="16">
+                            <el-input type="textarea" :rows="10" v-model="oneNews.news"></el-input>
+                        </el-col>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="cancel">好 的</el-button>
+                </div>
+            </el-dialog>
+        </div>
+
     </div>
 </template>
 
@@ -114,6 +143,17 @@
 
                 // 登录状态
                 islogin:false,
+
+                // 是否打开Dialog页面
+                dialogFormVisible: false,
+
+                // Dialog标题
+                dialog_title:"查看资讯内容",
+
+                // 表单域标签的位置
+                labelPosition:"right",
+
+                oneNews:'',
             }
         },
         created() {
@@ -189,7 +229,7 @@
                     url: this.$axios.defaults.baseURL + '/user/news/short_news_list',
                 }).then(res => {
                     for (let i = 0; i < 10; i++) {
-                        this.shortNewsList.push(res.data[i].newstitle);
+                        this.shortNewsList.push(res.data[i]);
                     }
                 }).catch(error => {
                     console.log(error);
@@ -240,6 +280,21 @@
             // 获取影片信息详情
             getMovieDatail(movieid){
                 this.$router.push({ name: 'moviedetail', params: { movieid:movieid }});
+            },
+
+            // 获取某条资讯内容,打开显示到dialog页面
+            getOneNews(id){
+                for(let i=0; i<10; i++){
+                    if(this.shortNewsList[i].newsid === id){
+                        this.oneNews = this.shortNewsList[i];
+                    }
+                }
+                this.dialogFormVisible = true;
+            },
+
+            // Dialog页面取消操作
+            cancel(){
+                this.$router.go(0);
             },
 
 
