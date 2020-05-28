@@ -32,7 +32,7 @@
 
                         <el-menu-item index="/movie_schedule" @click.native="handleMenuItemClick('/schedule_manage')">
                             <i class="el-icon-s-fold"></i>
-                            <span slot="title">排片管理</span>
+                            <span slot="title">场次管理</span>
                         </el-menu-item>
 
                         <el-menu-item index="/news_manage" @click.native="handleMenuItemClick('/news_manage')">

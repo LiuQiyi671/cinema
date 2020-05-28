@@ -15,7 +15,6 @@
             <div class="example"><img src="../assets/img/sold-seat.png">不可选</div>
             <div class="example"><img src="../assets/img/selected-seat.png">已选</div>
         </div>
-
         <!--        座位表-->
         <div class="seat-block">
             <div class="seat-container">

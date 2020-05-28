@@ -174,11 +174,13 @@
                             url: this.$axios.defaults.baseURL+'/user/register',
                             async:false,
                             data:{
+                                userid:0,
                                 username:this.ReginForm.username,
                                 password:this.ReginForm.password,
                                 tel:this.ReginForm.tel,
                                 email:this.ReginForm.email,
-                                gender:this.ReginForm.gender},
+                                gender:this.ReginForm.gender,
+                                money:0},
                         }).then(res => {
                             console.log(res);
                             alert("注册成功，请返回登录")

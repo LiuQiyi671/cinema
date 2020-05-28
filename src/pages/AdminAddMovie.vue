@@ -8,7 +8,7 @@
         </div>
 
 <!--        影片添加标题-->
-        <h3 style="margin-top: 90px; margin-left: 20px">添加影片</h3>
+        <h3 style="margin-top: 90px; margin-left: 20px">影片上架</h3>
 
 <!--        影片添加表格-->
         <el-form style="margin-top: 10px; margin-left: 450px" label-width="110px" label-position="left" :model="form">
@@ -125,7 +125,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">添加影片</el-button>
+                <el-button type="primary" @click="onSubmit">影片上架</el-button>
                 <el-button @click="reset">清除图片</el-button>
             </el-form-item>
 

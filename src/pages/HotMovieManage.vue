@@ -31,7 +31,7 @@
             <!--            添加热映影片按钮-->
             <div class="top">
                 <el-col>
-                    <el-button type="primary" size="small" @click="addHotMovie">添加热映影片</el-button>
+                    <el-button type="primary" size="small" @click="addHotMovie">影片上架</el-button>
                 </el-col>
             </div>
 
@@ -46,7 +46,7 @@
                     <el-table-column label="操作" width="200" align="center">
                         <template slot-scope="scope" v-if="scope.row">
                             <el-button size="mini" @click="editOneHotMovie(scope.row.movieid)">查看/更新</el-button>
-                            <el-button size="mini" type="danger" @click="deleteOneHotMovie(scope.row.movieid)">删除</el-button>
+                            <el-button size="mini" type="danger" @click="deleteOneHotMovie(scope.row.movieid)">下架</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

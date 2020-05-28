@@ -38,7 +38,7 @@
                     <el-table-column label="影片时长" align="center" prop="movieduration"></el-table-column>
                     <el-table-column label="操作" width="200" align="center">
                         <template slot-scope="scope" v-if="scope.row">
-                            <el-button size="small" @click="addHotMovieSchedule(scope.row.movieid)">添加排片</el-button>
+                            <el-button size="small" @click="addHotMovieSchedule(scope.row.movieid)">添加场次</el-button>
                             <el-button size="mini" @click="showThisMovieAllSchedule(scope.row.movieid)">查看所有
                             </el-button>
                         </template>
@@ -212,10 +212,10 @@
                 dialogFormVisible1: false,
 
                 // 查看排片Dialog标题
-                dialog_title: "查看本影片所有排片",
+                dialog_title: "查看本影片所有放映场次",
 
                 // 添加排片Dialog标题
-                dialog_title1: '添加排片',
+                dialog_title1: '添加放映场次',
 
                 // 表单域标签的位置
                 labelPosition: "right",
